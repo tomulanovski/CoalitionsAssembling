@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/spl211/Downloads/assignment-1-master/bin",
+            "binaryPath": "/home/spl211/Downloads/assignment-1-master/bin/cRace",
+            "binaryArgs": []
+        }
+    ]
+}
