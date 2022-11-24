@@ -22,6 +22,7 @@ int main(int argc, char **argv)
     while (!simulation.shouldTerminate())
     {
         simulation.step();
+
         outPerIter.push_back(Parser::makeJson(simulation));
     }
 

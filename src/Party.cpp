@@ -7,9 +7,7 @@ using std::vector;
 
 Party::Party(int id, string name, int mandates, JoinPolicy *jp) : mId(id), mName(name), mMandates(mandates), mJoinPolicy(jp), mState(Waiting) ,
  Timer(0) , Coalition(-1) , CoalitionsOffers()
-{
-    // You can change the implementation of the constructor, but not the signature!
-}
+{}
 Party::~Party() { //destructor
     if (mJoinPolicy) delete mJoinPolicy;
 }
@@ -70,7 +68,7 @@ const string & Party::getName() const
 void Party::step(Simulation &s)
 {
     if(mState==CollectingOffers) {
-        if (Timer<3)
+        if (Timer<2)
             Timer++;
         else {
             vector<int>mandates;
@@ -79,8 +77,9 @@ void Party::step(Simulation &s)
             }
             int coalition = mJoinPolicy->Join(mandates);
             mState=Joined;
-            Coalition=coalition;
-            s.UpdateCoalitionSize(coalition,mMandates);
+            Coalition=CoalitionsOffers[coalition];
+            s.UpdateCoalitionSize(Coalition,mMandates);
+            s.CloneAgent(Coalition,mId);
 
         }
     }
@@ -94,7 +93,7 @@ void Party::setTimer() {
     Timer++;
 }
 
-void Party::setCoalition(int Coalition) {
+void Party::setCoalition(int &Coalition) {
     this->Coalition = Coalition;
 }
 vector<int> Party::getOffers() {

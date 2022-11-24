@@ -63,10 +63,11 @@ Agent& Agent::operator=(Agent &&a) { //move assignment
         }
         if (tooffer.size() > 1) { //there is a party to offer to
             int choose = mSelectionPolicy->Select(tooffer, g); //the party which we offfer to join
-            Party chosen = g.getParty(choose);
-            chosen.AddOffer(Coalition);
-            if (chosen.getState() != CollectingOffers)
-                chosen.setState(CollectingOffers);
+            sim.updateoffer(choose ,Coalition);
+            // Party chosen = g.getParty(choose);
+            // chosen.AddOffer(Coalition);
+            // if (chosen.getState() != CollectingOffers)
+            //     chosen.setState(CollectingOffers);
         }
 
     }

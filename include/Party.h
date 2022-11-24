@@ -31,7 +31,7 @@ public:
     const string &getName() const;
     void AddOffer(int Coalition);
     void setTimer();
-    void setCoalition(int Coalition);
+    void setCoalition(int &Coalition);
     vector<int> getOffers();
     int getid();
 

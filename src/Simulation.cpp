@@ -2,33 +2,34 @@
 
 Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgents(agents) , Coalitions()
 {
-    for (int i=0;(unsigned)i<agents.size();i++) {
-        int Partyid = agents[i].getPartyId();
-        Party p=graph.getParty(Partyid);
-        p.setState(Joined);
-        p.setCoalition(i);
-        Coalitions.push_back(p.getMandates());
+    for (int i=0;(unsigned)i<mAgents.size();i++) {
+        int Partyid = mAgents[i].getPartyId();
+        mGraph.getParty(Partyid).setCoalition(i);
+        Coalitions.push_back(mGraph.getParty(Partyid).getMandates());
     }
 }
 
 void Simulation::step()
 {
     for (int v=0;v<mGraph.getNumVertices();v++) {
-         Party P=mGraph.getParty(v);
-         P.step(*this);
+         mGraph.getParty(v).step(*this);
     }
-    if (!shouldTerminate()) { //checking if we made a coalition
         for (int i = 0; (unsigned )i < mAgents.size(); i++) {
             mAgents[i].step(*this);
         }
     }
+
+void Simulation::updateoffer(int chosen, int Coalition) {
+    mGraph.getParty(chosen).AddOffer(Coalition);
+    if (mGraph.getParty(chosen).getState() != CollectingOffers)
+      mGraph.getParty(chosen).setState(CollectingOffers);
 }
 
 bool Simulation::shouldTerminate() const
 {
     int count=0;
-    for (int c=Coalitions[0];(unsigned )c<Coalitions.size() ;c++) {
-        if (c>60)
+    for (int c=0;(unsigned )c<Coalitions.size() ;c++) {
+        if (Coalitions[c]>60)
             return true;
         count = count+Coalitions[c];
     }
@@ -39,6 +40,9 @@ bool Simulation::shouldTerminate() const
 
 const Graph &Simulation::getGraph() const
 {
+    return mGraph;
+}
+Graph &Simulation::getGraph() {
     return mGraph;
 }
 
